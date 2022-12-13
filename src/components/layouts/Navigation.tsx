@@ -13,6 +13,26 @@ export default function Navigation(user?: User) {
   const router = useRouter()
   const { logout } = useAuth()
   const [open, setOpen] = useState(false)
+
+  const menuLinks = [
+    {
+      url: '/dashboard',
+      title: 'Dashboard',
+    },
+    {
+      url: '/guest',
+      title: 'Convidados',
+    },
+    {
+      url: '/messages',
+      title: 'Recados',
+    },
+    {
+      url: '/confirmation',
+      title: 'Confirmação',
+    },
+  ]
+
   return (
     <nav className="bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,12 +49,17 @@ export default function Navigation(user?: User) {
 
             {/* Navigation Links */}
             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-              <NavLink
-                href="/dashboard"
-                active={router.pathname === '/dashboard'}
-              >
-                Dashboard
-              </NavLink>
+              {menuLinks.map((link, index) => {
+                return (
+                  <NavLink
+                    key={index}
+                    href={link.url}
+                    active={router.pathname === link.url}
+                  >
+                    {link.title}
+                  </NavLink>
+                )
+              })}
             </div>
           </div>
 
@@ -106,12 +131,17 @@ export default function Navigation(user?: User) {
       {open && (
         <div className="block sm:hidden">
           <div className="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink
-              href="/dashboard"
-              active={router.pathname === '/dashboard'}
-            >
-              Dashboard
-            </ResponsiveNavLink>
+            {menuLinks.map((link, index) => {
+              return (
+                <ResponsiveNavLink
+                  key={index}
+                  href={link.url}
+                  active={router.pathname === link.url}
+                >
+                  {link.title}
+                </ResponsiveNavLink>
+              )
+            })}
           </div>
 
           {/* Responsive Settings Options */}
