@@ -3,8 +3,6 @@ import Head from 'next/head'
 import { InferGetServerSidePropsType } from 'next'
 import { GetServerSideProps } from 'next'
 import axios from '../lib/axios'
-import Modal from '../components/Modal'
-import { useState } from 'react'
 
 interface Data {
   name: string
@@ -31,22 +29,8 @@ export const getServerSideProps: GetServerSideProps<{
 export default function Page({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [open, setOpen] = useState(false)
-  const [modalMessage, setModalMessage] = useState('')
-
-  const handleModal = (message: string) => {
-    setModalMessage(message)
-    setOpen(true)
-  }
-
   return (
     <>
-      <button onClick={() => handleModal('lorem ipsum')}>Open Modal</button>
-      <Modal
-        toggle={open}
-        action={() => setOpen(false)}
-        message={modalMessage}
-      />
       <AppLayout
         header={
           <h2 className="font-semibold text-xl text-gray-800 leading-tight">
