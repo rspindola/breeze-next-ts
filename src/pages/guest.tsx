@@ -129,38 +129,105 @@ export default function Page({
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6 bg-white border-b border-gray-200">
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto custom-scroll">
                 <table className="table table-compact w-full table-auto">
                   <thead className="border-b">
                     <tr>
-                      <th className="text-left">Origem</th>
-                      <th className="text-left">Nome no Convite</th>
-                      <th className="text-right">Acompanhantes</th>
-                      <th className="text-right">Homens</th>
-                      <th className="text-right">Mulheres</th>
-                      <th className="text-right">Crianças</th>
-                      <th className="text-right">Total</th>
-                      <th className="text-center">Convite</th>
-                      <th className="text-center">Presente</th>
-                      <th className="text-center">Confirmação</th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal text-gray-800 uppercase bg-white border-b border-gray-200 text-left"
+                      >
+                        Origem
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-left"
+                      >
+                        Nome no Convite
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Acompanhantes
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Homens
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Mulheres
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Crianças
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Total
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Convite
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal  text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Presente
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal text-gray-800 uppercase bg-white border-b border-gray-200 text-center"
+                      >
+                        Confirmação
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.map((guest, index) => {
                       return (
-                        <tr key={index}>
-                          <td className="text-left">
-                            <span className="badge badge-primary badge-outline">
+                        <tr
+                          key={index}
+                          // onDoubleClick={(node, event): void =>
+                          //   console.log('Double Click Row', node, event)
+                          // }
+                        >
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-left">
+                            <span className="px-2 py-1 text-xs rounded-full text-indigo-500 border border-indigo-500 undefined ">
                               {guest.origin}
                             </span>
                           </td>
-                          <td className="text-left">{guest.name}</td>
-                          <td className="text-right">{guest.escorts}</td>
-                          <td className="text-right">{guest.men}</td>
-                          <td className="text-right">{guest.women}</td>
-                          <td className="text-right">{guest.children}</td>
-                          <td className="text-right">{guest.total}</td>
-                          <td className="text-center">
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-left">
+                            {guest.name}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {guest.escorts}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {guest.men}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {guest.women}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {guest.children}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {guest.total}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
                             <input
                               type="checkbox"
                               className="toggle toggle-success toggle-xs"
@@ -170,7 +237,7 @@ export default function Page({
                               }
                             />
                           </td>
-                          <td className="text-center">
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
                             <input
                               type="checkbox"
                               className="toggle toggle-success toggle-xs"
@@ -178,7 +245,7 @@ export default function Page({
                               onChange={(event) => handleGift(guest.id, event)}
                             />
                           </td>
-                          <td className="text-center">
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
                             <input
                               type="checkbox"
                               className="toggle toggle-success toggle-xs"
