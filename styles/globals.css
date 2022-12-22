@@ -63,3 +63,27 @@ a {
   background-color: transparent;
   color: currentColor;
 }
+.custom-scroll::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+  height: 5px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: #cecece;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #000;
+  border-right: none;
+  border-left: none;
+}
+
+.custom-scroll::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+.custom-scroll::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+  margin-top: 10px;
+}
