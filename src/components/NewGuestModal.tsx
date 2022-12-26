@@ -3,6 +3,8 @@ import { Dialog, Transition } from '@headlessui/react'
 
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import axios from '../lib/axios'
+import { toast } from 'react-toastify'
 
 type ModalProps = {
   toggle: boolean
@@ -10,23 +12,52 @@ type ModalProps = {
   action: () => void
 }
 
+interface GuestData {
+  origin: string
+  treatment: string
+  name: string
+  escorts: number
+  men: number
+  women: number
+  children: number
+}
+
 export default function NewGuestModal({ toggle, action }: ModalProps) {
   const cancelButtonRef = useRef(null)
 
+  const addGuest = async (data: GuestData) => {
+    const toastId = toast.loading('Carregando...')
+
+    await axios
+      .post('/api/guest', data)
+      .then(() => {
+        toast.update(toastId, {
+          render: 'Sucesso!',
+          type: 'success',
+          isLoading: false,
+          autoClose: 3000,
+        })
+      })
+      .catch((err) => {
+        toast.error('Ops, algo errado.')
+        console.log(err)
+      })
+  }
+
   const formik = useFormik({
     initialValues: {
-      origin: '',
-      treatment: '',
+      origin: 'Familia do noivo',
+      treatment: 'Sr.',
       name: '',
       escorts: 0,
       men: 0,
       women: 0,
       children: 0,
     },
-    onSubmit: (values, actions) => {
-      console.log('entrou')
+    onSubmit: async (values, actions) => {
       console.log(values)
-      actions.setSubmitting(false)
+      await addGuest(values)
+      // actions.setSubmitting(false)
       actions.resetForm()
     },
     validationSchema: yup.object({
@@ -67,7 +98,7 @@ export default function NewGuestModal({ toggle, action }: ModalProps) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <form onSubmit={() => formik.handleSubmit()}>
+                <form onSubmit={formik.handleSubmit}>
                   <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
