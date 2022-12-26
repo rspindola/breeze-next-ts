@@ -1,5 +1,6 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -12,37 +13,8 @@ type ModalProps = {
   action: () => void
 }
 
-interface GuestData {
-  origin: string
-  treatment: string
-  name: string
-  escorts: number
-  men: number
-  women: number
-  children: number
-}
-
 export default function NewGuestModal({ toggle, action }: ModalProps) {
   const cancelButtonRef = useRef(null)
-
-  const addGuest = async (data: GuestData) => {
-    const toastId = toast.loading('Carregando...')
-
-    await axios
-      .post('/api/guest', data)
-      .then(() => {
-        toast.update(toastId, {
-          render: 'Sucesso!',
-          type: 'success',
-          isLoading: false,
-          autoClose: 3000,
-        })
-      })
-      .catch((err) => {
-        toast.error('Ops, algo errado.')
-        console.log(err)
-      })
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -55,10 +27,33 @@ export default function NewGuestModal({ toggle, action }: ModalProps) {
       children: 0,
     },
     onSubmit: async (values, actions) => {
-      console.log(values)
-      await addGuest(values)
-      // actions.setSubmitting(false)
-      actions.resetForm()
+      const toastId = toast.loading('Carregando...')
+      actions.setSubmitting(true)
+
+      await axios
+        .post('/api/guest', values)
+        .then(() => {
+          toast.update(toastId, {
+            render: 'Sucesso!',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000,
+          })
+
+          actions.resetForm()
+          action()
+        })
+        .catch((err) => {
+          toast.update(toastId, {
+            render: 'Ops, algo errado.',
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000,
+          })
+          console.log(err)
+        })
+
+      actions.setSubmitting(false)
     },
     validationSchema: yup.object({
       origin: yup.string().trim().required('Name is required'),
@@ -76,182 +71,227 @@ export default function NewGuestModal({ toggle, action }: ModalProps) {
       <Dialog as="div" className="relative z-10" onClose={action}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-in-out duration-500"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-in-out duration-500"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <form onSubmit={formik.handleSubmit}>
-                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div className="sm:flex sm:items-start">
-                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-lg font-medium leading-6 text-gray-900"
+        <div className="fixed inset-0 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+              <Transition.Child
+                as={Fragment}
+                enter="transform transition ease-in-out duration-500 sm:duration-700"
+                enterFrom="translate-x-full"
+                enterTo="translate-x-0"
+                leave="transform transition ease-in-out duration-500 sm:duration-700"
+                leaveFrom="translate-x-0"
+                leaveTo="translate-x-full"
+              >
+                <Dialog.Panel className="pointer-events-auto relative w-screen max-w-3xl">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-in-out duration-500"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in-out duration-500"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <div className="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
+                      <button
+                        type="button"
+                        className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                        onClick={action}
+                        ref={cancelButtonRef}
+                      >
+                        <span className="sr-only">Close panel</span>
+                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </Transition.Child>
+                  <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                    <div className="px-4 sm:px-6">
+                      <Dialog.Title className="text-lg font-medium text-gray-900">
+                        Adicionar Convidado {formik.isSubmitting}
+                      </Dialog.Title>
+                    </div>
+                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                      {/* Replace with your content */}
+                      <div className="absolute inset-0 px-4 sm:px-6">
+                        <div
+                          className="h-full border-2 border-dashed border-gray-200"
+                          aria-hidden="true"
                         >
-                          Incluir convidado
-                        </Dialog.Title>
-                        <div className="mt-4">
-                          <div className="flex flex-col max-w-md bg-white rounded-lg shadow dark:bg-gray-800">
-                            <div className="flex-col mb-2">
-                              <div className="relative">
-                                <select
-                                  className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                  name="origin"
-                                  value={formik.values.origin}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                >
-                                  <option value="Familia do noivo">
-                                    Familia do noivo
-                                  </option>
-                                  <option value="Familia da noiva">
-                                    Familia da noiva
-                                  </option>
-                                  <option value="Amigos do noivo<">
-                                    Amigos do noivo
-                                  </option>
-                                  <option value="Amigos da noiva">
-                                    Amigos da noiva
-                                  </option>
-                                  <option value="Amigos dos pais do noivo">
-                                    Amigos dos pais do noivo
-                                  </option>
-                                  <option value="Amigos dos pais da noiva">
-                                    Amigos dos pais da noiva
-                                  </option>
-                                  <option value="Outros">Outros</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div className="flex flex-col mb-2">
-                              <div className="relative">
-                                <div className="relative mt-1 rounded-md shadow-sm">
-                                  <div className="absolute inset-y-0 left-0 flex items-center">
-                                    <label
-                                      htmlFor="treatment"
-                                      className="sr-only"
-                                    >
-                                      Currency
-                                    </label>
+                          <form
+                            onSubmit={formik.handleSubmit}
+                            className="container mx-auto shadow-md "
+                          >
+                            <div className="space-y-6 bg-white">
+                              <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">
+                                  Origem
+                                </h2>
+                                <div className="max-w-sm mx-auto md:w-2/3">
+                                  <div className="relative">
                                     <select
-                                      id="treatment"
-                                      name="treatment"
-                                      className="h-full pr-4 py-2 pl-2 text-gray-500 bg-transparent border-t border-b border-r border-transparent border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-r-md"
-                                      value={formik.values.treatment}
-                                      onChange={formik.handleChange}
-                                      onBlur={formik.handleBlur}
+                                      id="country"
+                                      name="country"
+                                      autoComplete="country-name"
+                                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                     >
-                                      <option>Sr.</option>
-                                      <option>Sra.</option>
-                                      <option>Sr e Familia</option>
-                                      <option>Sra e Familia</option>
+                                      <option value="Familia do noivo">
+                                        Familia do noivo
+                                      </option>
+                                      <option value="Familia da noiva">
+                                        Familia da noiva
+                                      </option>
+                                      <option value="Amigos do noivo<">
+                                        Amigos do noivo
+                                      </option>
+                                      <option value="Amigos da noiva">
+                                        Amigos da noiva
+                                      </option>
+                                      <option value="Amigos dos pais do noivo">
+                                        Amigos dos pais do noivo
+                                      </option>
+                                      <option value="Amigos dos pais da noiva">
+                                        Amigos dos pais da noiva
+                                      </option>
+                                      <option value="Outros">Outros</option>
                                     </select>
                                   </div>
-                                  <input
-                                    type="text"
-                                    name="name"
-                                    id="name"
-                                    className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full pl-28 py-2 pr-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                    placeholder="Nome Completo"
-                                    value={formik.values.name}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                  />
                                 </div>
                               </div>
+                              <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">
+                                  Nome Completo
+                                </h2>
+                                <div className="max-w-sm mx-auto md:w-2/3">
+                                  <div className="relative">
+                                    <div className="relative mt-1 rounded-md shadow-sm">
+                                      <div className="absolute inset-y-0 left-0 flex items-center">
+                                        <select
+                                          id="treatment"
+                                          name="treatment"
+                                          className="h-full pr-4 py-2 pl-2 text-gray-500 bg-transparent border-t border-b border-r border-transparent border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-r-md"
+                                          value={formik.values.treatment}
+                                          onChange={formik.handleChange}
+                                          onBlur={formik.handleBlur}
+                                        >
+                                          <option value="Sr.">Sr.</option>
+                                          <option value="Sra.">Sra.</option>
+                                          <option value="Sr e Familia">
+                                            Sr e Familia
+                                          </option>
+                                          <option value="Sra e Familia">
+                                            Sra e Familia
+                                          </option>
+                                          <option value="Outros">Outros</option>
+                                        </select>
+                                      </div>
+                                      <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full pl-28 py-2 pr-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                        placeholder="Nome Completo"
+                                        value={formik.values.name}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <hr />
+                              <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">
+                                  Informações Adicionais
+                                </h2>
+                                <div className="max-w-sm mx-auto space-y-5 md:w-2/3">
+                                  <div>
+                                    <div className=" relative ">
+                                      <input
+                                        type="number"
+                                        id="user-info-name"
+                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                        placeholder="Acompanhantes"
+                                        name="escorts"
+                                        value={formik.values.escorts}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className=" relative ">
+                                      <input
+                                        type="number"
+                                        id="user-info-phone"
+                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                        placeholder="Homens"
+                                        name="men"
+                                        value={formik.values.men}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className=" relative ">
+                                      <input
+                                        type="number"
+                                        id="user-info-phone"
+                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                        name="women"
+                                        placeholder="Mulheres"
+                                        value={formik.values.women}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className=" relative ">
+                                      <input
+                                        type="number"
+                                        id="user-info-phone"
+                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                        name="children"
+                                        placeholder="Crianças"
+                                        value={formik.values.children}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <hr />
+                              <div className="w-full px-4 pb-4 ml-auto text-gray-500 md:w-1/3">
+                                <button
+                                  type="submit"
+                                  className="py-2 px-4  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+                                >
+                                  Cadastrar
+                                </button>
+                              </div>
                             </div>
-                            <div className="flex gap-4 mb-2">
-                              <div className="relative">
-                                <input
-                                  type="number"
-                                  id="create-account-first-name"
-                                  className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 pl-2 pr-1 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                  name="escorts"
-                                  placeholder="Acompanhantes"
-                                  value={formik.values.escorts}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                />
-                              </div>
-                              <div className="relative">
-                                <input
-                                  type="number"
-                                  id="create-account-last-name"
-                                  className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 pl-2 pr-1 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                  name="men"
-                                  placeholder="Homens"
-                                  value={formik.values.men}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                />
-                              </div>
-                              <div className="relative">
-                                <input
-                                  type="number"
-                                  id="create-account-last-name"
-                                  className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 pl-2 pr-1 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                  name="women"
-                                  placeholder="Mulheres"
-                                  value={formik.values.women}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                />
-                              </div>
-                              <div className="relative">
-                                <input
-                                  type="number"
-                                  id="create-account-last-name"
-                                  className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 pl-2 pr-1 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                  name="children"
-                                  placeholder="Crianças"
-                                  value={formik.values.children}
-                                  onChange={formik.handleChange}
-                                  onBlur={formik.handleBlur}
-                                />
-                              </div>
-                            </div>
-                          </div>
+                          </form>
                         </div>
                       </div>
+                      {/* /End replace */}
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button
-                      type="submit"
-                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    >
-                      Salvar
-                    </button>
-                    <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={action}
-                      ref={cancelButtonRef}
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-              </Dialog.Panel>
-            </Transition.Child>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
           </div>
         </div>
       </Dialog>
