@@ -43,7 +43,17 @@ export default function Page({
   }
 
   return (
-    <>
+    <AppLayout
+      header={
+        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+          Lista de Confirmação
+        </h2>
+      }
+    >
+      <Head>
+        <title>Wedding ADM - Lista de Confirmação</title>
+      </Head>
+
       <Modal
         title="Mensagem"
         toggle={open}
@@ -51,75 +61,67 @@ export default function Page({
         message={modalMessage}
         hasCancelButton={false}
       />
-      <AppLayout
-        header={
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-            Lista de Confirmação
-          </h2>
-        }
-      >
-        <Head>
-          <title>Wedding ADM - Lista de Confirmação</title>
-        </Head>
-        <div className="py-12">
-          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-              <div className="p-6 bg-white border-b border-gray-200">
-                <div className="overflow-x-auto">
-                  <table className="table table-compact w-full table-auto">
-                    <thead className="border-b">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
-                        >
-                          Nome Completo
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
-                        >
-                          Email
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
-                        >
-                          Telefone
-                        </th>
-                        <th className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200text-center">
-                          Adultos
-                        </th>
-                        <th className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200text-center">
-                          Crianças
-                        </th>
-                        <th className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200text-center">
-                          Observação
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((confirmation, index) => {
-                        return (
-                          <tr key={index}>
-                            <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                              {confirmation.name}
-                            </td>
-                            <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                              {confirmation.email}
-                            </td>
-                            <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                              {confirmation.phone}
-                            </td>
-                            <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
-                              {confirmation.adults}
-                            </td>
-                            <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
-                              {confirmation.children}
-                            </td>
-                            <td className="text-center px-4 py-2">
+
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div className="p-6 bg-white border-b border-gray-200">
+              <div className="overflow-x-auto">
+                <table className="table table-compact w-full table-auto">
+                  <thead className="border-b">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                      >
+                        Nome Completo
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                      >
+                        Email
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                      >
+                        Telefone
+                      </th>
+                      <th className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200text-center">
+                        Adultos
+                      </th>
+                      <th className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200text-center">
+                        Crianças
+                      </th>
+                      <th className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200text-center">
+                        Observação
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((confirmation, index) => {
+                      return (
+                        <tr key={index}>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                            {confirmation.name}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                            {confirmation.email}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                            {confirmation.phone}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {confirmation.adults}
+                          </td>
+                          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 text-center">
+                            {confirmation.children}
+                          </td>
+                          <td className="text-center px-4 py-2">
+                            {confirmation.message && (
                               <a
-                                href="#"
+                                href="javascript:void(0)"
                                 onClick={() =>
                                   handleModal(confirmation.message)
                                 }
@@ -127,18 +129,18 @@ export default function Page({
                               >
                                 Ver
                               </a>
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
-      </AppLayout>
-    </>
+      </div>
+    </AppLayout>
   )
 }
