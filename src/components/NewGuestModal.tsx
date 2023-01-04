@@ -93,7 +93,7 @@ export default function NewGuestModal({ toggle, action }: ModalProps) {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto relative w-screen max-w-3xl">
+                <Dialog.Panel className="pointer-events-auto relative w-screen max-w-xl">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-500"
@@ -209,71 +209,83 @@ export default function NewGuestModal({ toggle, action }: ModalProps) {
                                   </div>
                                 </div>
                               </div>
-                              <hr />
                               <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
                                 <h2 className="max-w-sm mx-auto md:w-1/3">
-                                  Informações Adicionais
+                                  Acompanhantes
                                 </h2>
-                                <div className="max-w-sm mx-auto space-y-5 md:w-2/3">
-                                  <div>
-                                    <div className=" relative ">
-                                      <input
-                                        type="number"
-                                        id="user-info-name"
-                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                        placeholder="Acompanhantes"
-                                        name="escorts"
-                                        value={formik.values.escorts}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <div className=" relative ">
-                                      <input
-                                        type="number"
-                                        id="user-info-phone"
-                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                        placeholder="Homens"
-                                        name="men"
-                                        value={formik.values.men}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <div className=" relative ">
-                                      <input
-                                        type="number"
-                                        id="user-info-phone"
-                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                        name="women"
-                                        placeholder="Mulheres"
-                                        value={formik.values.women}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <div className=" relative ">
-                                      <input
-                                        type="number"
-                                        id="user-info-phone"
-                                        className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                                        name="children"
-                                        placeholder="Crianças"
-                                        value={formik.values.children}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                      />
-                                    </div>
+                                <div className="max-w-sm mx-auto md:w-2/3">
+                                  <div className="relative">
+                                    <input
+                                      type="number"
+                                      id="user-info-name"
+                                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                      placeholder="Acompanhantes"
+                                      name="escorts"
+                                      value={formik.values.escorts}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                    />
                                   </div>
                                 </div>
                               </div>
-                              <hr />
+
+                              <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">
+                                  Homens
+                                </h2>
+                                <div className="max-w-sm mx-auto md:w-2/3">
+                                  <div className="relative">
+                                    <input
+                                      type="number"
+                                      id="user-info-phone"
+                                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                      placeholder="Homens"
+                                      name="men"
+                                      value={formik.values.men}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">
+                                  Mulheres
+                                </h2>
+                                <div className="max-w-sm mx-auto md:w-2/3">
+                                  <div className="relative">
+                                    <input
+                                      type="number"
+                                      id="user-info-phone"
+                                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                      name="women"
+                                      placeholder="Mulheres"
+                                      value={formik.values.women}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="items-center w-full p-4 space-y-4 text-gray-500 md:inline-flex md:space-y-0">
+                                <h2 className="max-w-sm mx-auto md:w-1/3">
+                                  Crianças
+                                </h2>
+                                <div className="max-w-sm mx-auto md:w-2/3">
+                                  <div className="relative">
+                                    <input
+                                      type="number"
+                                      id="user-info-phone"
+                                      className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                      name="children"
+                                      placeholder="Crianças"
+                                      value={formik.values.children}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                               <div className="w-full px-4 pb-4 ml-auto text-gray-500 md:w-1/3">
                                 <button
                                   type="submit"
